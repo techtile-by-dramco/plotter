@@ -17,7 +17,7 @@ class TechtilePlotter:
                 )
             )
         self.fig = go.Figure(layout=layout)
-        antennas_plotted = False
+        self.antennas_plotted = False
         self.antennas_pos = [0] # placeholder to test
         self.fig.add_trace(go.Scatter3d(x=(-1,),
             y=(-1,),
@@ -32,21 +32,24 @@ class TechtilePlotter:
         """
         pass
 
-    def antennas(self, pattern=False, directivity=False):
+    def antennas(self, active_tiles:list=None, pattern=False, directivity=False):
         """ Plots the antenna locations
 
         Args:
+            active_tiles (list, optional): List of active tiles (only those will be plotted)
             pattern (bool, optional): Plot the pattern of the antennas (uses the normal of the tiles). Defaults to False.
             directivity (bool, optional): Plot the directivity of the antennas (uses the normal of the tiles). Defaults to False.
         """
         #TODO plot based on normal (include real dimensions)
-        scale = 0.1
-        x_vals = np.array([0,0,1*scale,1*scale,0])
-        y_vals = np.array([0,0,0,0,0])
-        z_vals = np.array([0,1*scale,1*scale,0,0])
-        for ant in self.antennas_pos:
-            self.fig.add_trace(go.Scatter3d(x=x_vals+4, y=y_vals, z=z_vals+1, mode='lines', surfaceaxis=1, # add a surface axis ('1' refers to axes[1] i.e. the y-axis)
-        surfacecolor='#66c2a5',showlegend=False))
+        if not self.antennas_plotted:
+            scale = 0.1
+            x_vals = np.array([0,0,1*scale,1*scale,0])
+            y_vals = np.array([0,0,0,0,0])
+            z_vals = np.array([0,1*scale,1*scale,0,0])
+            for ant in self.antennas_pos:
+                self.fig.add_trace(go.Scatter3d(x=x_vals+4, y=y_vals, z=z_vals+1, mode='lines', surfaceaxis=1, # add a surface axis ('1' refers to axes[1] i.e. the y-axis)
+            surfacecolor='#66c2a5',showlegend=False))
+            self.antennas_plotted = True
 
     def measurements(self, x,y,z, values, color=None, label=None):
         if color is None:
