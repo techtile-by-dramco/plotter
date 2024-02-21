@@ -1,3 +1,8 @@
+# include normal of tiles and thus also the antennas/microphones
+tiles:
+  - tile: A01 
+    normal: 'x'
+    
 microphones:
   - tile: 'A01'
     daq: '/PXI1Slot12/ai1'
