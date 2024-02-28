@@ -18,6 +18,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+dependencies = [
+  'numpy',
+  'plotly',
+]
 
 [project.urls]
 Homepage = "https://github.com/techtile-by-dramco/plotter"
