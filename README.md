@@ -4,7 +4,7 @@
 
 ```python
 plt = TechtilePlotter()
-plt.antennes()
+plt.antennas()
 plt.microphones()
 plt.measurements(positions, values)
 plt.show()
