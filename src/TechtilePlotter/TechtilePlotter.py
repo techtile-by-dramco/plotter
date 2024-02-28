@@ -21,6 +21,7 @@ class TechtilePlotter:
             )
         )
         self.fig = go.Figure(layout=layout)
+        self.fig.update_layout(scene_camera_eye=dict(x=7, y=7, z=4))
 
         if title:
             self.fig.update_layout(
