@@ -606,6 +606,13 @@ microphones:
     z: 0.266
 antennes:
   - tile: 'A01'
-    x: 8.37
-    y: 0.0
-    z: 0.266
+    channels:
+      - ch: 0
+        x: 8.37
+        y: 0.0
+        z: 0.266
+      - ch: 1
+        x: 8.37
+        y: 0.0
+        z: 0.266
+
