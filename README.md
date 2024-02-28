@@ -18,3 +18,10 @@ clone https://github.com/techtile-by-dramco/plotter.git
 cd plotter
 pip install --editable .
 ```
+
+Running example
+```sh
+cd plotter # if not already in this folder
+cd examples
+python .\example1.py
+```
