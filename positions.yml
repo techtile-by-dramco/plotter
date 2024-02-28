@@ -2,6 +2,8 @@
 tiles:
   - tile: A01 
     normal: (0,1,0)
+  - tile: A14 
+    normal: (0,-1,0)
     
 microphones:
   - tile: 'A01'
