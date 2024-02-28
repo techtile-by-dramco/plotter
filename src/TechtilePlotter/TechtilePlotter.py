@@ -6,7 +6,7 @@ import yaml
 
 class TechtilePlotter:
 
-    def __init__(self):
+    def __init__(self, title=None):
         # load positions from YAML
         # Create a layout with a specified aspect ratio
 
@@ -21,6 +21,11 @@ class TechtilePlotter:
             )
         )
         self.fig = go.Figure(layout=layout)
+
+        if title:
+            self.fig.update_layout(
+                title=dict(text=title, automargin=True)
+            )
 
         self.antennas_plotted = False
         self.sdr_descr = []
