@@ -73,7 +73,6 @@ class TechtilePlotter:
             marker=dict(color=color, colorscale='Viridis',
                         size=10, colorbar=dict(thickness=20))
         ))
-        pass
 
     def show(self):
         self.fig.show()
