@@ -11,7 +11,7 @@ plt.show()
 ```
 
 
-Installing package
+## Installing package
 
 Prior to imnstalling ensure you have the lastest pip version, e.g., `python3 -m pip install --upgrade pip`.
 
@@ -21,6 +21,14 @@ cd plotter
 pip install --editable .
 ```
 
+## Update package
+
+```sh
+cd plotter
+git pull
+pip install --upgrade pip
+pip install --editable .
+```
 Running example
 ```sh
 cd plotter # if not already in this folder
