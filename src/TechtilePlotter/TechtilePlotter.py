@@ -74,5 +74,5 @@ class TechtilePlotter:
     def show(self):
         self.fig.show()
 
-    def html(self, path):
-        self.fig.html(path)
+    def write_html(self, path):
+        self.fig.write_html(path)
