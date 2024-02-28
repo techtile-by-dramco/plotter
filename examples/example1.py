@@ -2,6 +2,6 @@
 
 from TechtilePlotter.TechtilePlotter import TechtilePlotter
 
-plt = TechtilePlotter()
+plt = TechtilePlotter(title="EXAMPLE 1")
 plt.antennas()
 plt.show()
