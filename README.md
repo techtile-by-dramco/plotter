@@ -13,6 +13,8 @@ plt.show()
 
 Installing package
 
+Prior to imnstalling ensure you have the lastest pip version, e.g., `python3 -m pip install --upgrade pip`.
+
 ```sh
 clone https://github.com/techtile-by-dramco/plotter.git
 cd plotter
