@@ -29,7 +29,8 @@ git pull
 pip install --upgrade pip
 pip install --editable .
 ```
-Running example
+
+## Running example
 ```sh
 cd plotter # if not already in this folder
 cd examples
