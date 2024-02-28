@@ -1,10 +1,118 @@
 # include normal of tiles and thus also the antennas/microphones
 tiles:
-  - tile: A01 
+  - tile: A01
     normal: (0,1,0)
-  - tile: A14 
+  - tile: A02
+    normal: (0,1,0)
+  - tile: A03
+    normal: (0,1,0)
+  - tile: A04
+    normal: (0,1,0)
+  - tile: A11
     normal: (0,-1,0)
-    
+  - tile: A12
+    normal: (0,-1,0)
+  - tile: A13
+    normal: (0,-1,0)
+  - tile: A14
+    normal: (0,-1,0)
+  - tile: B01
+    normal: (0,1,0)
+  - tile: B02
+    normal: (0,1,0)
+  - tile: B03
+    normal: (0,1,0)
+  - tile: B04
+    normal: (0,1,0)
+  - tile: B11
+    normal: (0,-1,0)
+  - tile: B12
+    normal: (0,-1,0)
+  - tile: B13
+    normal: (0,-1,0)
+  - tile: B14
+    normal: (0,-1,0)
+  - tile: C01
+    normal: (0,1,0)
+  - tile: C02
+    normal: (0,1,0)
+  - tile: C03
+    normal: (0,1,0)
+  - tile: C04
+    normal: (0,1,0)
+  - tile: C11
+    normal: (0,-1,0)
+  - tile: C12
+    normal: (0,-1,0)
+  - tile: C13
+    normal: (0,-1,0)
+  - tile: C14
+    normal: (0,-1,0)
+  - tile: D01
+    normal: (0,1,0)
+  - tile: D02
+    normal: (0,1,0)
+  - tile: D03
+    normal: (0,1,0)
+  - tile: D04
+    normal: (0,1,0)
+  - tile: D11
+    normal: (0,-1,0)
+  - tile: D12
+    normal: (0,-1,0)
+  - tile: D13
+    normal: (0,-1,0)
+  - tile: D14
+    normal: (0,-1,0)
+  - tile: E01
+    normal: (0,1,0)
+  - tile: E02
+    normal: (0,1,0)
+  - tile: E03
+    normal: (0,1,0)
+  - tile: E04
+    normal: (0,1,0)
+  - tile: E11
+    normal: (0,-1,0)
+  - tile: E12
+    normal: (0,-1,0)
+  - tile: E13
+    normal: (0,-1,0)
+  - tile: E14
+    normal: (0,-1,0)
+  - tile: F01
+    normal: (0,1,0)
+  - tile: F02
+    normal: (0,1,0)
+  - tile: F03
+    normal: (0,1,0)
+  - tile: F04
+    normal: (0,1,0)
+  - tile: F11
+    normal: (0,-1,0)
+  - tile: F12
+    normal: (0,-1,0)
+  - tile: F13
+    normal: (0,-1,0)
+  - tile: F14
+    normal: (0,-1,0)
+  - tile: G01
+    normal: (0,1,0)
+  - tile: G02
+    normal: (0,1,0)
+  - tile: G03
+    normal: (0,1,0)
+  - tile: G04
+    normal: (0,1,0)
+  - tile: G11
+    normal: (0,-1,0)
+  - tile: G12
+    normal: (0,-1,0)
+  - tile: G13
+    normal: (0,-1,0)
+  - tile: G14
+    normal: (0,-1,0)
+
 microphones:
   - tile: 'A01'
     daq: '/PXI1Slot12/ai1'
