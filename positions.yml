@@ -1,7 +1,7 @@
 # include normal of tiles and thus also the antennas/microphones
 tiles:
   - tile: A01 
-    normal: 'x'
+    normal: (0,1,0)
     
 microphones:
   - tile: 'A01'
