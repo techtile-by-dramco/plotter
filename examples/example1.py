@@ -1,6 +1,6 @@
 # python -m examples.example1
 
-from src.TechtilePlotter.TechtilePlotter import TechtilePlotter
+from TechtilePlotter import TechtilePlotter
 
 plt = TechtilePlotter()
 plt.antennas()
