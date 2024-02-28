@@ -1,6 +1,7 @@
 import plotly.graph_objects as go
 import numpy as np
 import os
+import yaml
 
 
 class TechtilePlotter:
@@ -14,20 +15,22 @@ class TechtilePlotter:
                 aspectmode='manual',
                 # Adjust x and y ratio to make it rectangular
                 aspectratio=dict(x=8.4, y=4, z=2.4),
-                xaxis=dict(range=[0, 8.4]),  # Set the range for the x-axis
-                yaxis=dict(range=[0, 4]),  # Set the range for the y-axis
+                xaxis=dict(range=[8.4, 0.0]),  # Set the range for the x-axis
+                yaxis=dict(range=[4.0, 0]),  # Set the range for the y-axis
                 zaxis=dict(range=[0, 2.4])   # Set the range for the z-axis
             )
         )
         self.fig = go.Figure(layout=layout)
+
         self.antennas_plotted = False
-        import yaml
+        self.sdr_descr = []
+
         with open(os.path.join(os.path.dirname(__file__), "..", "..", "positions.yml"), 'r') as file:
             positions = yaml.safe_load(file)
-        self.antennas_descr = positions["antennes"]  # placeholder to test
-        self.fig.add_trace(go.Scatter3d(x=(-1,),
-                                        y=(-1,),
-                                        z=(1,), showlegend=False))
+            self.sdr_descr = positions["antennes"]  # placeholder to test
+            # self.fig.add_trace(go.Scatter3d(x=(-1,),
+            #                                 y=(-1,),
+            #                                 z=(1,), showlegend=False))
 
     def microphones(self, pattern=False, directivity=False):
         """ Plots the microphones locations
@@ -52,10 +55,11 @@ class TechtilePlotter:
             x_vals = np.array([0, 0, 1*scale, 1*scale, 0])
             y_vals = np.array([0, 0, 0, 0, 0])
             z_vals = np.array([0, 1*scale, 1*scale, 0, 0])
-            for ant in self.antennas_descr:
-                self.fig.add_trace(go.Scatter3d(x=x_vals+ant["x"], y=y_vals+ant["y"], z=z_vals+ant["z"], mode='lines', surfaceaxis=1,  # add a surface axis ('1' refers to axes[1] i.e. the y-axis)
-                                                surfacecolor='#66c2a5', showlegend=False))
-            self.antennas_plotted = True
+            for usrp in self.sdr_descr:
+                for ch in usrp["channels"]:
+                    self.fig.add_trace(go.Scatter3d(x=x_vals+ch["x"], y=y_vals+ch["y"], z=z_vals+ch["z"], mode='lines', surfaceaxis=1,  # add a surface axis ('1' refers to axes[1] i.e. the y-axis)
+                                                    surfacecolor='#66c2a5', showlegend=False))
+                self.antennas_plotted = True
 
     def measurements(self, x, y, z, values, color=None, label=None):
         if color is None:
@@ -75,4 +79,4 @@ class TechtilePlotter:
         self.fig.show()
 
     def html(self, path):
-        self.fig.html(path)
+        self.fig.write_html(path)
