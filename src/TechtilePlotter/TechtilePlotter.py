@@ -56,15 +56,29 @@ class TechtilePlotter:
             directivity (bool, optional): Plot the directivity of the antennas (uses the normal of the tiles). Defaults to False.
         """
         # TODO plot based on normal (include real dimensions)
+        # if not self.antennas_plotted:
+        #     scale = 0.1
+        #     x_vals = np.array([0, 0, 1*scale, 1*scale, 0])
+        #     y_vals = np.array([0, 0, 0, 0, 0])
+        #     z_vals = np.array([0, 1*scale, 1*scale, 0, 0])
+        #     for usrp in self.sdr_descr:
+        #         for ch in usrp["channels"]:
+        #             self.fig.add_trace(go.Scatter3d(x=x_vals+ch["x"], y=y_vals+ch["y"], z=z_vals+ch["z"], mode='lines', surfaceaxis=1,  # add a surface axis ('1' refers to axes[1] i.e. the y-axis)
+        #                                             surfacecolor='#66c2a5', showlegend=False))
+        #         self.antennas_plotted = True
+        # ONLY active tiles
         if not self.antennas_plotted:
             scale = 0.1
             x_vals = np.array([0, 0, 1*scale, 1*scale, 0])
             y_vals = np.array([0, 0, 0, 0, 0])
             z_vals = np.array([0, 1*scale, 1*scale, 0, 0])
-            for usrp in self.sdr_descr:
+
+            # Show only active tiles
+            for tile_nr in active_tiles:
+                usrp = next((antenna for antenna in self.sdr_descr if antenna['tile'] == tile_nr), None)
                 for ch in usrp["channels"]:
                     self.fig.add_trace(go.Scatter3d(x=x_vals+ch["x"], y=y_vals+ch["y"], z=z_vals+ch["z"], mode='lines', surfaceaxis=1,  # add a surface axis ('1' refers to axes[1] i.e. the y-axis)
-                                                    surfacecolor='#66c2a5', showlegend=False))
+                                                surfacecolor='#66c2a5', showlegend=False))
                 self.antennas_plotted = True
 
     def measurements(self, x, y, z, values, color=None, label=None):
