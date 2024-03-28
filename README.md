@@ -29,6 +29,13 @@ git pull
 pip install --upgrade pip
 pip install --editable .
 ```
+On Windows PC
+Open command prompt (WIN+R --> cmd)
+```sh
+git clone https://github.com/techtile-by-dramco/plotter
+pip install C:\Users\PC-NAME\plotter
+rmdir /s plotter
+```
 
 ## Running example
 ```sh
