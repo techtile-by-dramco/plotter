@@ -645,6 +645,66 @@ antennes:
         x: 7.85
         y: 0.0
         z: 2.25
+  - tile: 'A05'
+    channels:
+      - ch: 0
+        x: 7.55
+        y: 0.66
+        z: 2.40
+      - ch: 1
+        x: 7.85
+        y: 0.66
+        z: 2.40
+  - tile: 'A06'
+    channels:
+      - ch: 0
+        x: 7.55
+        y: 1.26
+        z: 2.40
+      - ch: 1
+        x: 7.85
+        y: 1.26
+        z: 2.40
+  - tile: 'A07'
+    channels:
+      - ch: 0
+        x: 7.55
+        y: 1.86
+        z: 2.40
+      - ch: 1
+        x: 7.85
+        y: 1.86
+        z: 2.40
+  - tile: 'A08'
+    channels:
+      - ch: 0
+        x: 7.55
+        y: 2.46
+        z: 2.40
+      - ch: 1
+        x: 7.85
+        y: 2.46
+        z: 2.40
+  - tile: 'A09'
+    channels:
+      - ch: 0
+        x: 7.55
+        y: 3.06
+        z: 2.40
+      - ch: 1
+        x: 7.85
+        y: 3.06
+        z: 2.40
+  - tile: 'A10'
+    channels:
+      - ch: 0
+        x: 7.55
+        y: 3.66
+        z: 2.40
+      - ch: 1
+        x: 7.85
+        y: 3.66
+        z: 2.40
   - tile: 'A11'
     channels:
       - ch: 0
@@ -685,6 +745,66 @@ antennes:
         x: 7.85
         y: 4.0
         z: 0.45
+  - tile: 'A15'
+    channels:
+      - ch: 0
+        x: 7.55
+        y: 0.66
+        z: 0
+      - ch: 1
+        x: 7.85
+        y: 0.66
+        z: 0
+  - tile: 'A16'
+    channels:
+      - ch: 0
+        x: 7.55
+        y: 1.26
+        z: 0
+      - ch: 1
+        x: 7.85
+        y: 1.26
+        z: 0
+  - tile: 'A17'
+    channels:
+      - ch: 0
+        x: 7.55
+        y: 1.86
+        z: 2.40
+      - ch: 1
+        x: 7.85
+        y: 1.86
+        z: 2.40
+  - tile: 'A18'
+    channels:
+      - ch: 0
+        x: 7.55
+        y: 2.46
+        z: 0
+      - ch: 1
+        x: 7.85
+        y: 2.46
+        z: 0
+  - tile: 'A19'
+    channels:
+      - ch: 0
+        x: 7.55
+        y: 3.06
+        z: 0
+      - ch: 1
+        x: 7.85
+        y: 3.06
+        z: 0
+  - tile: 'A20'
+    channels:
+      - ch: 0
+        x: 7.55
+        y: 3.66
+        z: 0
+      - ch: 1
+        x: 7.85
+        y: 3.66
+        z: 0
   - tile: 'B01'
     channels:
       - ch: 0
