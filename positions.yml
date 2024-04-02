@@ -611,200 +611,320 @@ antennes:
         x: 7.55
         y: 0.0
         z: 0.45
+        vx: 0
+        vy: 1
+        vz: 0
       - ch: 1
         x: 7.85
         y: 0.0
         z: 0.45
+        vx: 0
+        vy: 1
+        vz: 0
   - tile: 'A02'
     channels:
       - ch: 0
         x: 7.55
         y: 0.0
         z: 1.05
+        vx: 0
+        vy: 1
+        vz: 0
       - ch: 1
         x: 7.85
         y: 0.0
         z: 1.05
+        vx: 0
+        vy: 1
+        vz: 0
   - tile: 'A03'
     channels:
       - ch: 0
         x: 7.55
         y: 0.0
         z: 1.65
+        vx: 0
+        vy: 1
+        vz: 0
       - ch: 1
         x: 7.85
         y: 0.0
         z: 1.65
+        vx: 0
+        vy: 1
+        vz: 0
   - tile: 'A04'
     channels:
       - ch: 0
         x: 7.55
         y: 0.0
         z: 2.25
+        vx: 0
+        vy: 1
+        vz: 0
       - ch: 1
         x: 7.85
         y: 0.0
         z: 2.25
+        vx: 0
+        vy: 1
+        vz: 0
   - tile: 'A05'
     channels:
       - ch: 0
         x: 7.55
         y: 0.66
         z: 2.40
+        vx: 0
+        vy: 0
+        vz: -1
       - ch: 1
         x: 7.85
         y: 0.66
         z: 2.40
+        vx: 0
+        vy: 0
+        vz: -1
   - tile: 'A06'
     channels:
       - ch: 0
         x: 7.55
         y: 1.26
         z: 2.40
+        vx: 0
+        vy: 0
+        vz: -1
       - ch: 1
         x: 7.85
         y: 1.26
         z: 2.40
+        vx: 0
+        vy: 0
+        vz: -1
   - tile: 'A07'
     channels:
       - ch: 0
         x: 7.55
         y: 1.86
         z: 2.40
+        vx: 0
+        vy: 0
+        vz: -1
       - ch: 1
         x: 7.85
         y: 1.86
         z: 2.40
+        vx: 0
+        vy: 0
+        vz: -1
   - tile: 'A08'
     channels:
       - ch: 0
         x: 7.55
         y: 2.46
         z: 2.40
+        vx: 0
+        vy: 0
+        vz: -1
       - ch: 1
         x: 7.85
         y: 2.46
         z: 2.40
+        vx: 0
+        vy: 0
+        vz: -1
   - tile: 'A09'
     channels:
       - ch: 0
         x: 7.55
         y: 3.06
         z: 2.40
+        vx: 0
+        vy: 0
+        vz: -1
       - ch: 1
         x: 7.85
         y: 3.06
         z: 2.40
+        vx: 0
+        vy: 0
+        vz: -1
   - tile: 'A10'
     channels:
       - ch: 0
         x: 7.55
         y: 3.66
         z: 2.40
+        vx: 0
+        vy: 0
+        vz: -1
       - ch: 1
         x: 7.85
         y: 3.66
         z: 2.40
+        vx: 0
+        vy: 0
+        vz: -1
   - tile: 'A11'
     channels:
       - ch: 0
         x: 7.55
         y: 4.0
         z: 2.25
+        vx: 0
+        vy: -1
+        vz: 0
       - ch: 1
         x: 7.85
         y: 4.0
         z: 2.25
+        vx: 0
+        vy: -1
+        vz: 0
   - tile: 'A12'
     channels:
       - ch: 0
         x: 7.55
         y: 4.0
         z: 1.65
+        vx: 0
+        vy: -1
+        vz: 0
       - ch: 1
         x: 7.85
         y: 4.0
         z: 1.65
+        vx: 0
+        vy: -1
+        vz: 0
   - tile: 'A13'
     channels:
       - ch: 0
         x: 7.55
         y: 4.0
         z: 1.05
+        vx: 0
+        vy: -1
+        vz: 0
       - ch: 1
         x: 7.85
         y: 4.0
         z: 1.05
+        vx: 0
+        vy: -1
+        vz: 0
   - tile: 'A14'
     channels:
       - ch: 0
         x: 7.55
         y: 4.0
         z: 0.45
+        vx: 0
+        vy: -1
+        vz: 0
       - ch: 1
         x: 7.85
         y: 4.0
         z: 0.45
+        vx: 0
+        vy: -1
+        vz: 0
   - tile: 'A15'
     channels:
       - ch: 0
         x: 7.55
         y: 0.66
         z: 0
+        vx: 0
+        vy: 0
+        vz: 1
       - ch: 1
         x: 7.85
         y: 0.66
         z: 0
+        vx: 0
+        vy: 0
+        vz: 1
   - tile: 'A16'
     channels:
       - ch: 0
         x: 7.55
         y: 1.26
         z: 0
+        vx: 0
+        vy: 0
+        vz: 1
       - ch: 1
         x: 7.85
         y: 1.26
         z: 0
+        vx: 0
+        vy: 0
+        vz: 1
   - tile: 'A17'
     channels:
       - ch: 0
         x: 7.55
         y: 1.86
-        z: 2.40
+        z: 0
+        vx: 0
+        vy: 0
+        vz: 1
       - ch: 1
         x: 7.85
         y: 1.86
-        z: 2.40
+        z: 0
+        vx: 0
+        vy: 0
+        vz: 1
   - tile: 'A18'
     channels:
       - ch: 0
         x: 7.55
         y: 2.46
         z: 0
+        vx: 0
+        vy: 0
+        vz: 1
       - ch: 1
         x: 7.85
         y: 2.46
         z: 0
+        vx: 0
+        vy: 0
+        vz: 1
   - tile: 'A19'
     channels:
       - ch: 0
         x: 7.55
         y: 3.06
         z: 0
+        vx: 0
+        vy: 0
+        vz: 1
       - ch: 1
         x: 7.85
         y: 3.06
         z: 0
+        vx: 0
+        vy: 0
+        vz: 1
   - tile: 'A20'
     channels:
       - ch: 0
         x: 7.55
         y: 3.66
         z: 0
+        vx: 0
+        vy: 0
+        vz: 1
       - ch: 1
         x: 7.85
         y: 3.66
         z: 0
+        vx: 0
+        vy: 0
+        vz: 1
   - tile: 'B01'
     channels:
       - ch: 0

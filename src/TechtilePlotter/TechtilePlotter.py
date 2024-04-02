@@ -46,6 +46,46 @@ class TechtilePlotter:
             directivity (bool, optional): Plot the directivity of the microphones (uses the normal of the tiles). Defaults to False.
         """
         pass
+    
+    def normalize(self, vector):
+        """Normalize a vector to make it a unit vector."""
+        norm = np.linalg.norm(vector)
+        if norm == 0:
+            return vector
+        return vector / norm
+
+    def calculate_rotation_matrix(self, default_vector, target_vector):
+        """Calculate the rotation matrix to align the default vector with the target vector."""
+        default_vector = self.normalize(default_vector)
+        target_vector = self.normalize(target_vector)
+        
+        # Calculate the dot product
+        dot_product = np.dot(default_vector, target_vector)
+        
+        if dot_product == -1.0:
+            rotation_matrix = np.eye(3)
+        else:
+            # Calculate the cross product
+            cross_product = np.cross(default_vector, target_vector)
+            
+            # Calculate the skew-symmetric matrix
+            skew_symmetric_matrix = np.array([[0, -cross_product[2], cross_product[1]],
+                                            [cross_product[2], 0, -cross_product[0]],
+                                            [-cross_product[1], cross_product[0], 0]])
+            
+            # Calculate the rotation matrix
+            rotation_matrix = np.eye(3) + skew_symmetric_matrix + np.dot(skew_symmetric_matrix, skew_symmetric_matrix) * (1 / (1 + dot_product))
+
+        return rotation_matrix
+
+
+    def transform_points(self, matrix, transformation_matrix):
+        """Apply the transformation matrix to each point in the original matrix."""
+        transformed_matrix = []
+        for point in matrix:
+            transformed_point = np.dot(transformation_matrix, point)
+            transformed_matrix.append(transformed_point)
+        return np.asarray(transformed_matrix)
 
     def antennas(self, active_tiles: list = None, pattern=False, directivity=False):
         """ Plots the antenna locations
@@ -73,12 +113,37 @@ class TechtilePlotter:
             y_vals = np.array([0, 0, 0, 0, 0])
             z_vals = np.array([0, 1*scale, 1*scale, 0, 0])
 
+            antenna_matrix = np.transpose(np.asarray([x_vals, y_vals, z_vals]))
+
+            # Default unit vector
+            default_vector = [0, 1, 0]
+
             # Show only active tiles
             for tile_nr in active_tiles:
                 usrp = next((antenna for antenna in self.sdr_descr if antenna['tile'] == tile_nr), None)
                 for ch in usrp["channels"]:
-                    self.fig.add_trace(go.Scatter3d(x=x_vals+ch["x"], y=y_vals+ch["y"], z=z_vals+ch["z"], mode='lines', surfaceaxis=1,  # add a surface axis ('1' refers to axes[1] i.e. the y-axis)
-                                                surfacecolor='#66c2a5', showlegend=False))
+
+                    # print(f"Plotting {tile_nr} CH{ch}")
+
+                    # Target unit vector
+                    target_vector = [ch["vx"], ch["vy"], ch["vz"]]
+
+                    if not np.allclose(default_vector, target_vector):
+                        # Calculate the rotation matrix
+                        rotation_matrix = self.calculate_rotation_matrix(default_vector, target_vector)
+
+                        # Transform the points
+                        transformed_matrix = self.transform_points(antenna_matrix, rotation_matrix)
+                    
+                    else:
+                        transformed_matrix = antenna_matrix
+
+                    x_vals_ = transformed_matrix[:,0]
+                    y_vals_ = transformed_matrix[:,1]
+                    z_vals_ = transformed_matrix[:,2]
+
+                    self.fig.add_trace(go.Scatter3d(x=x_vals_+ch["x"], y=y_vals_+ch["y"], z=z_vals_+ch["z"], mode='lines', surfaceaxis=1,  # add a surface axis ('1' refers to axes[1] i.e. the y-axis)
+                                                 line=dict(color="#000000"), showlegend=False)) #surfacecolor='#000000',
                 self.antennas_plotted = True
 
     def measurements(self, x, y, z, values, color=None, label=None):
