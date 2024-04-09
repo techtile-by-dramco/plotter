@@ -87,7 +87,7 @@ class TechtilePlotter:
             transformed_matrix.append(transformed_point)
         return np.asarray(transformed_matrix)
 
-    def antennas(self, active_tiles: list = None, pattern=False, directivity=False):
+    def antennas(self, active_tiles: list = None, pattern=False, directivity=False, color="#000000"):
         """ Plots the antenna locations
 
         Args:
@@ -107,44 +107,45 @@ class TechtilePlotter:
         #                                             surfacecolor='#66c2a5', showlegend=False))
         #         self.antennas_plotted = True
         # ONLY active tiles
-        if not self.antennas_plotted:
-            scale = 0.1
-            x_vals = np.array([0, 0, 1*scale, 1*scale, 0])
-            y_vals = np.array([0, 0, 0, 0, 0])
-            z_vals = np.array([0, 1*scale, 1*scale, 0, 0])
+        # if not self.antennas_plotted:
+        scale = 0.1
+        x_vals = np.array([0, 0, 1*scale, 1*scale, 0])
+        y_vals = np.array([0, 0, 0, 0, 0])
+        z_vals = np.array([0, 1*scale, 1*scale, 0, 0])
 
-            antenna_matrix = np.transpose(np.asarray([x_vals, y_vals, z_vals]))
+        antenna_matrix = np.transpose(np.asarray([x_vals, y_vals, z_vals]))
 
-            # Default unit vector
-            default_vector = [0, 1, 0]
+        # Default unit vector
+        default_vector = [0, 1, 0]
 
-            # Show only active tiles
-            for tile_nr in active_tiles:
-                usrp = next((antenna for antenna in self.sdr_descr if antenna['tile'] == tile_nr), None)
-                for ch in usrp["channels"]:
+        # Show only active tiles
+        for tile_nr in active_tiles:
+            usrp = next((antenna for antenna in self.sdr_descr if antenna['tile'] == tile_nr), None)
+            # print(usrp)
+            for ch in usrp["channels"]:
 
-                    # print(f"Plotting {tile_nr} CH{ch}")
+                # print(f"Plotting {tile_nr} CH{ch}")
 
-                    # Target unit vector
-                    target_vector = [ch["vx"], ch["vy"], ch["vz"]]
+                # Target unit vector
+                target_vector = [ch["vx"], ch["vy"], ch["vz"]]
 
-                    if not np.allclose(default_vector, target_vector):
-                        # Calculate the rotation matrix
-                        rotation_matrix = self.calculate_rotation_matrix(default_vector, target_vector)
+                if not np.allclose(default_vector, target_vector):
+                    # Calculate the rotation matrix
+                    rotation_matrix = self.calculate_rotation_matrix(default_vector, target_vector)
 
-                        # Transform the points
-                        transformed_matrix = self.transform_points(antenna_matrix, rotation_matrix)
-                    
-                    else:
-                        transformed_matrix = antenna_matrix
+                    # Transform the points
+                    transformed_matrix = self.transform_points(antenna_matrix, rotation_matrix)
+                
+                else:
+                    transformed_matrix = antenna_matrix
 
-                    x_vals_ = transformed_matrix[:,0]
-                    y_vals_ = transformed_matrix[:,1]
-                    z_vals_ = transformed_matrix[:,2]
+                x_vals_ = transformed_matrix[:,0]
+                y_vals_ = transformed_matrix[:,1]
+                z_vals_ = transformed_matrix[:,2]
 
-                    self.fig.add_trace(go.Scatter3d(x=x_vals_+ch["x"], y=y_vals_+ch["y"], z=z_vals_+ch["z"], mode='lines', surfaceaxis=1,  # add a surface axis ('1' refers to axes[1] i.e. the y-axis)
-                                                 line=dict(color="#000000"), showlegend=False)) #surfacecolor='#000000',
-                self.antennas_plotted = True
+                self.fig.add_trace(go.Scatter3d(x=x_vals_+ch["x"], y=y_vals_+ch["y"], z=z_vals_+ch["z"], mode='lines', surfaceaxis=1,  # add a surface axis ('1' refers to axes[1] i.e. the y-axis)
+                                                line=dict(color=color), showlegend=False)) #surfacecolor='#000000',
+                # self.antennas_plotted = True
 
     def measurements(self, x, y, z, values, color=None, label=None, size=10):
         if color is None:
