@@ -150,7 +150,7 @@ class TechtilePlotter:
     def measurements(self, positions, values, colors=None, labels=None, size=10):
         if colors is None:
             colors = values
-        if labels = None:
+        if labels is None:
             labels = values
         x = [p.x for p in positions]
         y = [p.y for p in positions]
