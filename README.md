@@ -3,6 +3,8 @@
 ## Interface
 
 ```python
+from TechtilePlotter.TechtilePlotter import TechtilePlotter
+
 plt = TechtilePlotter()
 plt.antennas()
 plt.microphones()
