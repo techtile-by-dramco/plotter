@@ -147,9 +147,11 @@ class TechtilePlotter:
                                                 line=dict(color=color), showlegend=False)) #surfacecolor='#000000',
                 # self.antennas_plotted = True
 
-    def measurements(self, positions, values, color=None, label=None, size=10):
-        if color is None:
-            color = values
+    def measurements(self, positions, values, colors=None, labels=None, size=10):
+        if colors is None:
+            colors = values
+        if labels = None:
+            labels = values
         x = [p.x for p in positions]
         y = [p.y for p in positions]
         z = [p.z for p in positions]
@@ -158,9 +160,9 @@ class TechtilePlotter:
             x=x,
             y=y,
             z=z,
-            text=label,
+            text=labels,
             mode='markers',
-            marker=dict(color=color, colorscale='Viridis',
+            marker=dict(color=colors, colorscale='Viridis',
                         size=size, colorbar=dict(thickness=20))
         ))
         
