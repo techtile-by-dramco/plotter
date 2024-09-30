@@ -147,7 +147,24 @@ class TechtilePlotter:
                                                 line=dict(color=color), showlegend=False)) #surfacecolor='#000000',
                 # self.antennas_plotted = True
 
-    def measurements(self, x, y, z, values, color=None, label=None, size=10):
+    def measurements(self, positions, values, color=None, label=None, size=10):
+        if color is None:
+            color = values
+        x = [p.x for p in positions]
+        y = [p.y for p in positions]
+        z = [p.z for p in positions]
+        
+        self.fig.add_trace(go.Scatter3d(
+            x=x,
+            y=y,
+            z=z,
+            text=label,
+            mode='markers',
+            marker=dict(color=color, colorscale='Viridis',
+                        size=size, colorbar=dict(thickness=20))
+        ))
+        
+    def measurements_xyz(self, x, y, z, values, color=None, label=None, size=10):
         if color is None:
             color = values
         self.fig.add_trace(go.Scatter3d(
