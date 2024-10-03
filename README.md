@@ -23,6 +23,12 @@ cd plotter
 pip install --editable .
 ```
 
+or
+
+```sh
+pip install git+https://github.com/techtile-by-dramco/plotter
+```
+
 ## Update package
 
 ```sh
@@ -30,6 +36,12 @@ cd plotter
 git pull
 pip install --upgrade pip
 pip install --editable .
+```
+
+or
+
+```sh
+pip install git+https://github.com/techtile-by-dramco/plotter -U
 ```
 
 ## Running example
