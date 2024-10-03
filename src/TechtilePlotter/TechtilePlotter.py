@@ -32,8 +32,8 @@ class TechtilePlotter:
         self.sdr_descr = []
 
         import importlib.resources
-        with importlib.resources.open_text(__name__, 'positions.yml') as file:
-        # with open(os.path.join(os.path.dirname(__file__), "..", "..", "positions.yml"), 'r') as file:
+        # with importlib.resources.open_text(__name__, 'positions.yml') as file:
+        with open(os.path.join(os.path.dirname(__file__), "..", "..", "positions.yml"), 'r') as file:
             positions = yaml.safe_load(file)
             self.sdr_descr = positions["antennes"]  # placeholder to test
             # self.fig.add_trace(go.Scatter3d(x=(-1,),
