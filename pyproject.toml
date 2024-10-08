@@ -21,6 +21,7 @@ classifiers = [
 dependencies = [
   'numpy',
   'plotly',
+  'dash'
 ]
 
 [project.urls]
