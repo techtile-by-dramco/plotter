@@ -3,6 +3,8 @@
 ## Interface
 
 ```python
+from TechtilePlotter.TechtilePlotter import TechtilePlotter
+
 plt = TechtilePlotter()
 plt.antennas()
 plt.microphones()
@@ -13,12 +15,18 @@ plt.show()
 
 ## Installing package
 
-Prior to imnstalling ensure you have the lastest pip version, e.g., `python3 -m pip install --upgrade pip`.
+Prior to installing ensure you have the latest pip version, e.g., `python3 -m pip install --upgrade pip`.
 
 ```sh
-clone https://github.com/techtile-by-dramco/plotter.git
+git clone https://github.com/techtile-by-dramco/plotter.git
 cd plotter
 pip install --editable .
+```
+
+or
+
+```sh
+pip install git+https://github.com/techtile-by-dramco/plotter
 ```
 
 ## Update package
@@ -28,6 +36,12 @@ cd plotter
 git pull
 pip install --upgrade pip
 pip install --editable .
+```
+
+or
+
+```sh
+pip install git+https://github.com/techtile-by-dramco/plotter -U
 ```
 
 ## Running example
