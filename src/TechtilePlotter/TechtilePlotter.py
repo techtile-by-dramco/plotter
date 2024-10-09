@@ -64,10 +64,10 @@ class TechtilePlotter:
             # Register callbacks
             self.app.callback(
                 Output("live-3d-scatter-plot", "figure"),
-                (
+                # (
                     Input("interval-component", "n_intervals"),
-                    State("camera-store", "data"),
-                ),
+                    # State("camera-store", "data"),
+                # ),
             )(self.update_graph)
 
             self.app.callback(
@@ -143,7 +143,7 @@ class TechtilePlotter:
         self.data_store["z"].append(z)
         self.data_store["values"].append(values)
 
-    def update_graph(self, n, camera_view):
+    def update_graph(self, n):
         # Extract x, y, z data from the store
 
         x = self.data_store["x"]
@@ -170,7 +170,7 @@ class TechtilePlotter:
                 xaxis=dict(range=[8.4, 0.0]),  # Set the range for the x-axis
                 yaxis=dict(range=[4.0, 0]),  # Set the range for the y-axis
                 zaxis=dict(range=[0, 2.4]),  # Set the range for the z-axis,
-                camera=camera_view,
+                camera=self.camera_view,
             )
         )
 
