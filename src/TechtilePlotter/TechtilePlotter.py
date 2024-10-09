@@ -64,7 +64,10 @@ class TechtilePlotter:
             # Register callbacks
             self.app.callback(
                 Output("live-3d-scatter-plot", "figure"),
-                [Input("interval-component", "n_intervals"), State("camera-store", "data")],
+                [
+                    Input("interval-component", "n_intervals"),
+                    State("camera-store", "data"),
+                ],
             )(self.update_graph)
 
             self.app.callback(
@@ -87,7 +90,7 @@ class TechtilePlotter:
                     zaxis=dict(range=[0, 2.4]),  # Set the range for the z-axis,
                     camera=self.camera_view,
                 )
-        )
+            )
         self.fig = go.Figure(layout=self.layout)
         self.fig.update_layout(scene_camera_eye=dict(x=7, y=7, z=4))
 
@@ -159,10 +162,21 @@ class TechtilePlotter:
             ),
         )
         # Return the figure
-        self.layout.scene.camera = camera_view
-        _fig = {"data": [scatter], "layout": self.layout}
+        layout = go.Layout(
+            scene=dict(
+                aspectmode="manual",
+                # Adjust x and y ratio to make it rectangular
+                aspectratio=dict(x=8.4, y=4, z=2.4),
+                xaxis=dict(range=[8.4, 0.0]),  # Set the range for the x-axis
+                yaxis=dict(range=[4.0, 0]),  # Set the range for the y-axis
+                zaxis=dict(range=[0, 2.4]),  # Set the range for the z-axis,
+                camera=camera_view,
+            )
+        )
 
-        return _fig
+        _fig = {"data": [scatter], "layout": layout}
+
+        return go.Figure(_fig)
 
     def run(self):
         # Run the Dash app in a separate thread
