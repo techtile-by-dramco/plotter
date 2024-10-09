@@ -132,7 +132,7 @@ class TechtilePlotter:
         self.data_store["z"].append(z)
         self.data_store["values"].append(values)
 
-    def update_graph(self, n):
+    def update_graph(self, n, camera_view):
         # Extract x, y, z data from the store
 
         x = self.data_store["x"]
@@ -159,7 +159,7 @@ class TechtilePlotter:
                 xaxis=dict(range=[8.4, 0.0]),  # Set the range for the x-axis
                 yaxis=dict(range=[4.0, 0]),  # Set the range for the y-axis
                 zaxis=dict(range=[0, 2.4]),  # Set the range for the z-axis,
-                camera=self.camera_view,
+                camera=camera_view,
                 uirevision=True,
             )
         )
