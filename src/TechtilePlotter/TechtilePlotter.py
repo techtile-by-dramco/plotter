@@ -22,6 +22,8 @@ class TechtilePlotter:
 
             self.data_store = {"x": [], "y": [], "z": [], "values": []}
 
+            self.is_recording = False
+
             self.camera_view = {  # Default camera view
                 "eye": {"x": 7, "y": 7, "z": 4},
                 "up": {"x": 0, "y": 0, "z": 1},
