@@ -49,15 +49,15 @@ class TechtilePlotter:
                         id="interval-component", interval=1000, n_intervals=0
                     ),  # Update every second
                     # Buttons to start/stop recording
-                    html.Div(
-                        style={"textAlign": "center"},
-                        children=[
-                            html.Button(
-                                "Start Recording", id="start-button", n_clicks=0
-                            ),
-                            html.Button("Stop Recording", id="stop-button", n_clicks=0),
-                        ],
-                    ),
+                    # html.Div(
+                    #     style={"textAlign": "center"},
+                    #     children=[
+                    #         html.Button(
+                    #             "Start Recording", id="start-button", n_clicks=0
+                    #         ),
+                    #         html.Button("Stop Recording", id="stop-button", n_clicks=0),
+                    #     ],
+                    # ),
                 ],
             )
 
@@ -72,21 +72,21 @@ class TechtilePlotter:
                 Input("live-3d-scatter-plot", "relayoutData"),
             )(self.store_camera_view)
 
-            self.app.callback(
-                Output("interval-component", "disabled"),
-                [Input("start-button", "n_clicks"), Input("stop-button", "n_clicks")],
-            )(self.toggle_recording)
-            self.layout = go.Layout(
+            # self.app.callback(
+            #     Output("interval-component", "disabled"),
+            #     [Input("start-button", "n_clicks"), Input("stop-button", "n_clicks")],
+            # )(self.toggle_recording)
 
-            scene=dict(
-                aspectmode="manual",
-                # Adjust x and y ratio to make it rectangular
-                aspectratio=dict(x=8.4, y=4, z=2.4),
-                xaxis=dict(range=[8.4, 0.0]),  # Set the range for the x-axis
-                yaxis=dict(range=[4.0, 0]),  # Set the range for the y-axis
-                zaxis=dict(range=[0, 2.4]),  # Set the range for the z-axis,
-                camera=self.camera_view,
-            )
+            self.layout = go.Layout(
+                scene=dict(
+                    aspectmode="manual",
+                    # Adjust x and y ratio to make it rectangular
+                    aspectratio=dict(x=8.4, y=4, z=2.4),
+                    xaxis=dict(range=[8.4, 0.0]),  # Set the range for the x-axis
+                    yaxis=dict(range=[4.0, 0]),  # Set the range for the y-axis
+                    zaxis=dict(range=[0, 2.4]),  # Set the range for the z-axis,
+                    camera=self.camera_view,
+                )
         )
         self.fig = go.Figure(layout=self.layout)
         self.fig.update_layout(scene_camera_eye=dict(x=7, y=7, z=4))
@@ -112,19 +112,19 @@ class TechtilePlotter:
         if realtime:
             self.run()
 
-    def toggle_recording(self, start_clicks, stop_clicks):
-        """Toggle recording based on button clicks."""
-        if start_clicks > stop_clicks:  # If Start has been clicked more than Stop
-            self.is_recording = True
-            self.data_store = {
-                "x": [],
-                "y": [],
-                "z": [],
-                "values": [],
-            }  # Reset the data store when starting
-        else:
-            self.is_recording = False  # Stop recording
-        return False  # Return False to keep the interval running (no disabling)
+    # def toggle_recording(self, start_clicks, stop_clicks):
+    #     """Toggle recording based on button clicks."""
+    #     if start_clicks > stop_clicks:  # If Start has been clicked more than Stop
+    #         self.is_recording = True
+    #         self.data_store = {
+    #             "x": [],
+    #             "y": [],
+    #             "z": [],
+    #             "values": [],
+    #         }  # Reset the data store when starting
+    #     else:
+    #         self.is_recording = False  # Stop recording
+    #     return False  # Return False to keep the interval running (no disabling)
 
     def store_camera_view(self, relayoutData):
         """Store the current camera view from the graph."""
@@ -134,15 +134,14 @@ class TechtilePlotter:
 
     def measurements_rt(self, x, y, z, values, color=None, label=None):
         # Update the store with new data
-        if self.is_recording:
-            self.data_store["x"].append(x)
-            self.data_store["y"].append(y)
-            self.data_store["z"].append(z)
-            self.data_store["values"].append(values)
+        # if self.is_recording:
+        self.data_store["x"].append(x)
+        self.data_store["y"].append(y)
+        self.data_store["z"].append(z)
+        self.data_store["values"].append(values)
 
     def update_graph(self, n):
         # Extract x, y, z data from the store
-        print("updating graph")
 
         x = self.data_store["x"]
         y = self.data_store["y"]
