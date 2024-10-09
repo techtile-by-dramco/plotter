@@ -64,10 +64,10 @@ class TechtilePlotter:
             # Register callbacks
             self.app.callback(
                 Output("live-3d-scatter-plot", "figure"),
-                [
+                (
                     Input("interval-component", "n_intervals"),
                     State("camera-store", "data"),
-                ],
+                ),
             )(self.update_graph)
 
             self.app.callback(
