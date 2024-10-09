@@ -140,7 +140,7 @@ class TechtilePlotter:
         self.data_store["z"].append(z)
         self.data_store["values"].append(values)
 
-    def update_graph(self, n):
+    def update_graph(self, n, camera_view):
         # Extract x, y, z data from the store
 
         x = self.data_store["x"]
@@ -159,7 +159,7 @@ class TechtilePlotter:
             ),
         )
         # Return the figure
-        self.layout.scene.camera = self.camera_view
+        self.layout.scene.camera = camera_view
         _fig = {"data": [scatter], "layout": self.layout}
 
         return _fig
