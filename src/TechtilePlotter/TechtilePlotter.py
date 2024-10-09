@@ -15,7 +15,7 @@ class TechtilePlotter:
         if realtime:
 
             from dash import dcc, html
-            from dash.dependencies import Input, Output
+            from dash.dependencies import Input, Output, State
 
             # Initialize the Dash app
             self.app = dash.Dash(__name__)
@@ -39,7 +39,9 @@ class TechtilePlotter:
                     "padding": "0",
                 },
                 children=[
-                    dcc.Graph(id="live-3d-scatter-plot", style={"height": "100vh"}),
+                    dcc.Graph(
+                        id="live-3d-scatter-plot", style={"height": "80vh"}
+                    ),  # Height reduced for buttons
                     dcc.Store(
                         id="camera-store", data=self.camera_view
                     ),  # Store camera view
@@ -59,25 +61,23 @@ class TechtilePlotter:
                 ],
             )
 
-            # Register the callbacks
+            # Register callbacks
             self.app.callback(
                 Output("live-3d-scatter-plot", "figure"),
-                Input("interval-component", "n_intervals"),  # Trigger every interval
+                [Input("interval-component", "n_intervals"), State("camera-store", "data")],
             )(self.update_graph)
 
             self.app.callback(
                 Output("camera-store", "data"),
-                Input(
-                    "live-3d-scatter-plot", "relayoutData"
-                ),  # Trigger when the graph is relayed
+                Input("live-3d-scatter-plot", "relayoutData"),
             )(self.store_camera_view)
 
             self.app.callback(
                 Output("interval-component", "disabled"),
                 [Input("start-button", "n_clicks"), Input("stop-button", "n_clicks")],
             )(self.toggle_recording)
+            self.layout = go.Layout(
 
-        self.layout = go.Layout(
             scene=dict(
                 aspectmode="manual",
                 # Adjust x and y ratio to make it rectangular
@@ -161,7 +161,7 @@ class TechtilePlotter:
         )
         # Return the figure
         self.layout.scene.camera = self.camera_view
-        _fig = go.Figure({"data": [scatter], "layout": self.layout})
+        _fig = {"data": [scatter], "layout": self.layout}
 
         return _fig
 
