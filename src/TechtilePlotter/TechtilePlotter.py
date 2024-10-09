@@ -6,7 +6,6 @@ import threading
 import dash
 
 
-
 class TechtilePlotter:
 
     def __init__(self, title=None, realtime=False):
@@ -45,6 +44,16 @@ class TechtilePlotter:
                     dcc.Interval(
                         id="interval-component", interval=1000, n_intervals=0
                     ),  # Update every second
+                    # Buttons to start/stop recording
+                    html.Div(
+                        style={"textAlign": "center"},
+                        children=[
+                            html.Button(
+                                "Start Recording", id="start-button", n_clicks=0
+                            ),
+                            html.Button("Stop Recording", id="stop-button", n_clicks=0),
+                        ],
+                    ),
                 ],
             )
 
@@ -60,6 +69,11 @@ class TechtilePlotter:
                     "live-3d-scatter-plot", "relayoutData"
                 ),  # Trigger when the graph is relayed
             )(self.store_camera_view)
+
+            self.app.callback(
+                Output("interval-component", "disabled"),
+                [Input("start-button", "n_clicks"), Input("stop-button", "n_clicks")],
+            )(self.toggle_recording)
 
         self.layout = go.Layout(
             scene=dict(
@@ -82,8 +96,11 @@ class TechtilePlotter:
         self.sdr_descr = []
 
         import importlib.resources
+
         # with importlib.resources.open_text(__name__, 'positions.yml') as file:
-        with open(os.path.join(os.path.dirname(__file__), "positions.yml"), 'r') as file:
+        with open(
+            os.path.join(os.path.dirname(__file__), "positions.yml"), "r"
+        ) as file:
             positions = yaml.safe_load(file)
             self.sdr_descr = positions["antennes"]  # placeholder to test
             # self.fig.add_trace(go.Scatter3d(x=(-1,),
@@ -93,18 +110,33 @@ class TechtilePlotter:
         if realtime:
             self.run()
 
+    def toggle_recording(self, start_clicks, stop_clicks):
+        """Toggle recording based on button clicks."""
+        if start_clicks > stop_clicks:  # If Start has been clicked more than Stop
+            self.is_recording = True
+            self.data_store = {
+                "x": [],
+                "y": [],
+                "z": [],
+                "values": [],
+            }  # Reset the data store when starting
+        else:
+            self.is_recording = False  # Stop recording
+        return False  # Return False to keep the interval running (no disabling)
+
     def store_camera_view(self, relayoutData):
         """Store the current camera view from the graph."""
-        if relayoutData and 'scene.camera' in relayoutData:
-            return relayoutData['scene.camera']
+        if relayoutData and "scene.camera" in relayoutData:
+            return relayoutData["scene.camera"]
         return dash.no_update  # Do not update if no camera change
 
     def measurements_rt(self, x, y, z, values, color=None, label=None):
         # Update the store with new data
-        self.data_store["x"].append(x)
-        self.data_store["y"].append(y)
-        self.data_store["z"].append(z)
-        self.data_store["values"].append(values)
+        if self.is_recording:
+            self.data_store["x"].append(x)
+            self.data_store["y"].append(y)
+            self.data_store["z"].append(z)
+            self.data_store["values"].append(values)
 
     def update_graph(self, n):
         # Extract x, y, z data from the store
@@ -144,7 +176,7 @@ class TechtilePlotter:
             directivity (bool, optional): Plot the directivity of the microphones (uses the normal of the tiles). Defaults to False.
         """
         pass
-    
+
     def normalize(self, vector):
         """Normalize a vector to make it a unit vector."""
         norm = np.linalg.norm(vector)
@@ -156,26 +188,34 @@ class TechtilePlotter:
         """Calculate the rotation matrix to align the default vector with the target vector."""
         default_vector = self.normalize(default_vector)
         target_vector = self.normalize(target_vector)
-        
+
         # Calculate the dot product
         dot_product = np.dot(default_vector, target_vector)
-        
+
         if dot_product == -1.0:
             rotation_matrix = np.eye(3)
         else:
             # Calculate the cross product
             cross_product = np.cross(default_vector, target_vector)
-            
+
             # Calculate the skew-symmetric matrix
-            skew_symmetric_matrix = np.array([[0, -cross_product[2], cross_product[1]],
-                                            [cross_product[2], 0, -cross_product[0]],
-                                            [-cross_product[1], cross_product[0], 0]])
-            
+            skew_symmetric_matrix = np.array(
+                [
+                    [0, -cross_product[2], cross_product[1]],
+                    [cross_product[2], 0, -cross_product[0]],
+                    [-cross_product[1], cross_product[0], 0],
+                ]
+            )
+
             # Calculate the rotation matrix
-            rotation_matrix = np.eye(3) + skew_symmetric_matrix + np.dot(skew_symmetric_matrix, skew_symmetric_matrix) * (1 / (1 + dot_product))
+            rotation_matrix = (
+                np.eye(3)
+                + skew_symmetric_matrix
+                + np.dot(skew_symmetric_matrix, skew_symmetric_matrix)
+                * (1 / (1 + dot_product))
+            )
 
         return rotation_matrix
-
 
     def transform_points(self, matrix, transformation_matrix):
         """Apply the transformation matrix to each point in the original matrix."""
@@ -185,8 +225,14 @@ class TechtilePlotter:
             transformed_matrix.append(transformed_point)
         return np.asarray(transformed_matrix)
 
-    def antennas(self, active_tiles: list = None, pattern=False, directivity=False, color="#000000"):
-        """ Plots the antenna locations
+    def antennas(
+        self,
+        active_tiles: list = None,
+        pattern=False,
+        directivity=False,
+        color="#000000",
+    ):
+        """Plots the antenna locations
 
         Args:
             active_tiles (list, optional): List of active tiles (only those will be plotted)
@@ -207,9 +253,9 @@ class TechtilePlotter:
         # ONLY active tiles
         # if not self.antennas_plotted:
         scale = 0.1
-        x_vals = np.array([0, 0, 1*scale, 1*scale, 0])
+        x_vals = np.array([0, 0, 1 * scale, 1 * scale, 0])
         y_vals = np.array([0, 0, 0, 0, 0])
-        z_vals = np.array([0, 1*scale, 1*scale, 0, 0])
+        z_vals = np.array([0, 1 * scale, 1 * scale, 0, 0])
 
         antenna_matrix = np.transpose(np.asarray([x_vals, y_vals, z_vals]))
 
@@ -218,7 +264,10 @@ class TechtilePlotter:
 
         # Show only active tiles
         for tile_nr in active_tiles:
-            usrp = next((antenna for antenna in self.sdr_descr if antenna['tile'] == tile_nr), None)
+            usrp = next(
+                (antenna for antenna in self.sdr_descr if antenna["tile"] == tile_nr),
+                None,
+            )
             # print(usrp)
             for ch in usrp["channels"]:
 
@@ -229,20 +278,33 @@ class TechtilePlotter:
 
                 if not np.allclose(default_vector, target_vector):
                     # Calculate the rotation matrix
-                    rotation_matrix = self.calculate_rotation_matrix(default_vector, target_vector)
+                    rotation_matrix = self.calculate_rotation_matrix(
+                        default_vector, target_vector
+                    )
 
                     # Transform the points
-                    transformed_matrix = self.transform_points(antenna_matrix, rotation_matrix)
-                
+                    transformed_matrix = self.transform_points(
+                        antenna_matrix, rotation_matrix
+                    )
+
                 else:
                     transformed_matrix = antenna_matrix
 
-                x_vals_ = transformed_matrix[:,0]
-                y_vals_ = transformed_matrix[:,1]
-                z_vals_ = transformed_matrix[:,2]
+                x_vals_ = transformed_matrix[:, 0]
+                y_vals_ = transformed_matrix[:, 1]
+                z_vals_ = transformed_matrix[:, 2]
 
-                self.fig.add_trace(go.Scatter3d(x=x_vals_+ch["x"], y=y_vals_+ch["y"], z=z_vals_+ch["z"], mode='lines', surfaceaxis=1,  # add a surface axis ('1' refers to axes[1] i.e. the y-axis)
-                                                line=dict(color=color), showlegend=False)) #surfacecolor='#000000',
+                self.fig.add_trace(
+                    go.Scatter3d(
+                        x=x_vals_ + ch["x"],
+                        y=y_vals_ + ch["y"],
+                        z=z_vals_ + ch["z"],
+                        mode="lines",
+                        surfaceaxis=1,  # add a surface axis ('1' refers to axes[1] i.e. the y-axis)
+                        line=dict(color=color),
+                        showlegend=False,
+                    )
+                )  # surfacecolor='#000000',
                 # self.antennas_plotted = True
 
     def measurements(self, positions, values, colors=None, labels=None, size=10):
@@ -253,29 +315,41 @@ class TechtilePlotter:
         x = [p.x for p in positions]
         y = [p.y for p in positions]
         z = [p.z for p in positions]
-        
-        self.fig.add_trace(go.Scatter3d(
-            x=x,
-            y=y,
-            z=z,
-            text=labels,
-            mode='markers',
-            marker=dict(color=colors, colorscale='Viridis',
-                        size=size, colorbar=dict(thickness=20))
-        ))
-        
+
+        self.fig.add_trace(
+            go.Scatter3d(
+                x=x,
+                y=y,
+                z=z,
+                text=labels,
+                mode="markers",
+                marker=dict(
+                    color=colors,
+                    colorscale="Viridis",
+                    size=size,
+                    colorbar=dict(thickness=20),
+                ),
+            )
+        )
+
     def measurements_xyz(self, x, y, z, values, color=None, label=None, size=10):
         if color is None:
             color = values
-        self.fig.add_trace(go.Scatter3d(
-            x=x,
-            y=y,
-            z=z,
-            text=label,
-            mode='markers',
-            marker=dict(color=color, colorscale='Viridis',
-                        size=size, colorbar=dict(thickness=20))
-        ))
+        self.fig.add_trace(
+            go.Scatter3d(
+                x=x,
+                y=y,
+                z=z,
+                text=label,
+                mode="markers",
+                marker=dict(
+                    color=color,
+                    colorscale="Viridis",
+                    size=size,
+                    colorbar=dict(thickness=20),
+                ),
+            )
+        )
 
     def show(self):
         self.fig.show()
