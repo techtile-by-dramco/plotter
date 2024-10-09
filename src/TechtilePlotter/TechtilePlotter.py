@@ -171,6 +171,7 @@ class TechtilePlotter:
                 yaxis=dict(range=[4.0, 0]),  # Set the range for the y-axis
                 zaxis=dict(range=[0, 2.4]),  # Set the range for the z-axis,
                 camera=self.camera_view,
+                uirevision=True
             )
         )
 
