@@ -31,44 +31,33 @@ class TechtilePlotter:
             }
 
             # Layout of the app with full-width styles
-            self.app.layout = html.Div(
-                style={
-                    "width": "100%",
-                    "height": "100vh",
-                    "margin": "0",
-                    "padding": "0",
-                },
-                children=[
-                    dcc.Graph(
-                        id="live-3d-scatter-plot", style={"height": "80vh"}
-                    ),  # Height reduced for buttons
-                    dcc.Store(
-                        id="camera-store", data=self.camera_view
-                    ),  # Store camera view
-                    dcc.Interval(
-                        id="interval-component", interval=1000, n_intervals=0
-                    ),  # Update every second
-                    # Buttons to start/stop recording
-                    # html.Div(
-                    #     style={"textAlign": "center"},
-                    #     children=[
-                    #         html.Button(
-                    #             "Start Recording", id="start-button", n_clicks=0
-                    #         ),
-                    #         html.Button("Stop Recording", id="stop-button", n_clicks=0),
-                    #     ],
-                    # ),
-                ],
-            )
+            # Layout with full-width style and two plots side by side (no buttons)
+            self.app.layout = html.Div(style={'width': '100%', 'height': '100vh', 'display': 'flex'}, children=[
+                html.Div(style={'width': '50%'}, children=[
+                    dcc.Graph(id='live-3d-scatter-plot', style={'height': '80vh'}),
+                    dcc.Store(id='camera-store', data=self.camera_view),  # Store camera view
+                ]),
+                html.Div(style={'width': '50%'}, children=[
+                    dcc.Graph(id='live-2d-plot', style={'height': '80vh'}),
+                ]),
+                dcc.Interval(id='interval-component', interval=1000, n_intervals=0),  # Update every second
+            ])
 
-            # Register callbacks
+            # Register callbacks for updating both figures
             self.app.callback(
-                Output("live-3d-scatter-plot", "figure"),
-                # (
-                    Input("interval-component", "n_intervals"),
-                    # State("camera-store", "data"),
-                # ),
+                [Output('live-3d-scatter-plot', 'figure'), Output('live-2d-plot', 'figure')],
+                [Input('interval-component', 'n_intervals'),
+                State('camera-store', 'data')]
             )(self.update_graph)
+
+            # # Register callbacks
+            # self.app.callback(
+            #     Output("live-3d-scatter-plot", "figure"),
+            #     # (
+            #         Input("interval-component", "n_intervals"),
+            #         # State("camera-store", "data"),
+            #     # ),
+            # )(self.update_graph)
 
             self.app.callback(
                 Output("camera-store", "data"),
@@ -151,7 +140,7 @@ class TechtilePlotter:
         z = self.data_store["z"]
         values = self.data_store["values"]
 
-        scatter = go.Scatter3d(
+        scatter_3d = go.Scatter3d(
             x=x,
             y=y,
             z=z,
@@ -162,7 +151,7 @@ class TechtilePlotter:
             ),
         )
         # Return the figure
-        layout = go.Layout(
+        layout_3d = go.Layout(
             scene=dict(
                 aspectmode="manual",
                 # Adjust x and y ratio to make it rectangular
@@ -171,13 +160,36 @@ class TechtilePlotter:
                 yaxis=dict(range=[4.0, 0]),  # Set the range for the y-axis
                 zaxis=dict(range=[0, 2.4]),  # Set the range for the z-axis,
                 camera=self.camera_view,
-                uirevision=True
+                uirevision=True,
             )
         )
 
-        _fig = {"data": [scatter], "layout": layout}
+        layout_2d = go.Layout(
+            scene=dict(
+                aspectmode="manual",
+                # Adjust x and y ratio to make it rectangular
+                aspectratio=dict(x=8.4, y=4),
+                xaxis=dict(range=[8.4, 0.0]),  # Set the range for the x-axis
+                yaxis=dict(range=[4.0, 0]),  # Set the range for the y-axis
+                uirevision=True,
+            )
+        )
 
-        return go.Figure(_fig)
+        scatter_2d = go.Scatter(
+            x=x,
+            y=y,
+            text=values,
+            mode="markers",
+            marker=dict(
+                color=values, colorscale="Viridis", size=10, colorbar=dict(thickness=20)
+            ),
+        )
+
+        # Return both the 3D and 2D figures
+        return {"data": [scatter_3d], "layout": layout_3d}, {
+            "data": [scatter_2d],
+            "layout": layout_2d,
+        }
 
     def run(self):
         # Run the Dash app in a separate thread
