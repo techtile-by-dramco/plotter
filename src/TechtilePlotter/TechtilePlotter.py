@@ -193,7 +193,12 @@ class TechtilePlotter:
 
     def run(self):
         # Run the Dash app in a separate thread
-        self.thr = threading.Thread(target=self.app.run_server, daemon=True)
+        kwargs = {
+            "debug"=False,
+            "port"=8080,
+            "host" ="0.0.0.0"
+        }
+        self.thr = threading.Thread(target=self.app.run_server, daemon=True, kwargs=kwargs)
         self.thr.start()
 
     def microphones(self, pattern=False, directivity=False):
