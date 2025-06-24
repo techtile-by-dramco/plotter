@@ -150,7 +150,7 @@ class TechtilePlotter:
                 color=values,
                 colorscale="Viridis",
                 size=10,
-                colorbar=dict(thickness=20,cmin=-55),
+                colorbar=dict(thickness=20),
                 line=dict(
                     color=["black"] + [None] * (len(x) - 1),
                     width=[5] + [0] * (len(x) - 1),
@@ -191,7 +191,7 @@ class TechtilePlotter:
                 color=values,
                 colorscale="Viridis",
                 size=10,
-                colorbar=dict(thickness=20, cmin=-55),
+                colorbar=dict(thickness=20),
                 line=dict(
                     color=["black"] + [None] * (len(x) - 1),
                     width=[5] + [0] * (len(x) - 1),
