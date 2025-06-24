@@ -155,6 +155,7 @@ class TechtilePlotter:
                     color=["black"] + [None] * (len(x) - 1),
                     width=[5] + [0] * (len(x) - 1),
                 ),
+                cmin=-55,
             ),
         )
         # Return the figure
@@ -190,6 +191,7 @@ class TechtilePlotter:
             marker=dict(
                 color=values,
                 colorscale="Viridis",
+                cmin=-55,
                 size=10,
                 colorbar=dict(thickness=20),
                 line=dict(
