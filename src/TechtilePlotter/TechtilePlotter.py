@@ -32,22 +32,42 @@ class TechtilePlotter:
 
             # Layout of the app with full-width styles
             # Layout with full-width style and two plots side by side (no buttons)
-            self.app.layout = html.Div(style={'width': '100%', 'height': '100vh', 'display': 'flex'}, children=[
-                html.Div(style={'width': '50%'}, children=[
-                    dcc.Graph(id='live-3d-scatter-plot', style={'height': '80vh'}),
-                    dcc.Store(id='camera-store', data=self.camera_view),  # Store camera view
-                ]),
-                html.Div(style={'width': '50%'}, children=[
-                    dcc.Graph(id='live-2d-plot', style={'height': '80vh'}),
-                ]),
-                dcc.Interval(id='interval-component', interval=1000, n_intervals=0),  # Update every second
-            ])
+            self.app.layout = html.Div(
+                style={"width": "100%", "height": "100vh", "display": "flex"},
+                children=[
+                    html.Div(
+                        style={"width": "50%"},
+                        children=[
+                            dcc.Graph(
+                                id="live-3d-scatter-plot", style={"height": "80vh"}
+                            ),
+                            dcc.Store(
+                                id="camera-store", data=self.camera_view
+                            ),  # Store camera view
+                        ],
+                    ),
+                    html.Div(
+                        style={"width": "50%"},
+                        children=[
+                            dcc.Graph(id="live-2d-plot", style={"height": "80vh"}),
+                        ],
+                    ),
+                    dcc.Interval(
+                        id="interval-component", interval=1000, n_intervals=0
+                    ),  # Update every second
+                ],
+            )
 
             # Register callbacks for updating both figures
             self.app.callback(
-                [Output('live-3d-scatter-plot', 'figure'), Output('live-2d-plot', 'figure')],
-                [Input('interval-component', 'n_intervals'),
-                State('camera-store', 'data')]
+                [
+                    Output("live-3d-scatter-plot", "figure"),
+                    Output("live-2d-plot", "figure"),
+                ],
+                [
+                    Input("interval-component", "n_intervals"),
+                    State("camera-store", "data"),
+                ],
             )(self.update_graph)
 
             # # Register callbacks
@@ -93,7 +113,9 @@ class TechtilePlotter:
 
         # with importlib.resources.open_text(__name__, 'positions.yml') as file:
         with open(
-            os.path.join(os.path.dirname(__file__), "positions.yml"), "r", encoding="utf-8"
+            os.path.join(os.path.dirname(__file__), "positions.yml"),
+            "r",
+            encoding="utf-8",
         ) as file:
             positions = yaml.safe_load(file)
             self.sdr_descr = positions["antennes"]  # placeholder to test
@@ -207,11 +229,7 @@ class TechtilePlotter:
 
     def run(self):
         # Run the Dash app in a separate thread
-        kwargs = {
-            "debug":False,
-            "port": 8080,
-            "host" :"0.0.0.0"
-        }
+        kwargs = {"debug": False, "port": 8080, "host": "0.0.0.0"}
         self.thr = threading.Thread(target=self.app.run, daemon=True, kwargs=kwargs)
         self.thr.start()
 
