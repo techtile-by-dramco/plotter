@@ -113,9 +113,7 @@ class TechtilePlotter:
 
         # with importlib.resources.open_text(__name__, 'positions.yml') as file:
         with open(
-            os.path.join(os.path.dirname(__file__), "positions.yml"),
-            "r",
-            encoding="utf-8",
+            os.path.join(os.path.dirname(__file__), "positions.yml"), "r"
         ) as file:
             positions = yaml.safe_load(file)
             self.sdr_descr = positions["antennes"]  # placeholder to test
@@ -146,7 +144,7 @@ class TechtilePlotter:
             return relayoutData["scene.camera"]
         return dash.no_update  # Do not update if no camera change
 
-    def measurements_rt(self, x, y, z, values, label=None):
+    def measurements_rt(self, x, y, z, values, color=None, label=None):
         # Update the store with new data
         # if self.is_recording:
         self.data_store["x"].append(x)
@@ -169,14 +167,7 @@ class TechtilePlotter:
             text=values,
             mode="markers",
             marker=dict(
-                color=values,
-                colorscale="Viridis",
-                size=10,
-                colorbar=dict(thickness=20),
-                line=dict(
-                    color=["black"] + [None] * (len(x) - 1),
-                    width=[5] + [0] * (len(x) - 1),
-                ),
+                color=values, colorscale="Viridis", size=10, colorbar=dict(thickness=20)
             ),
         )
         # Return the figure
@@ -210,14 +201,7 @@ class TechtilePlotter:
             text=values,
             mode="markers",
             marker=dict(
-                color=values,
-                colorscale="Viridis",
-                size=10,
-                colorbar=dict(thickness=20),
-                line=dict(
-                    color=["black"] + [None] * (len(x) - 1),
-                    width=[5] + [0] * (len(x) - 1),
-                ),
+                color=values, colorscale="Viridis", size=10, colorbar=dict(thickness=20)
             ),
         )
 
@@ -230,7 +214,9 @@ class TechtilePlotter:
     def run(self):
         # Run the Dash app in a separate thread
         kwargs = {"debug": False, "port": 8080, "host": "0.0.0.0"}
-        self.thr = threading.Thread(target=self.app.run, daemon=True, kwargs=kwargs)
+        self.thr = threading.Thread(
+            target=self.app.run_server, daemon=True, kwargs=kwargs
+        )
         self.thr.start()
 
     def microphones(self, pattern=False, directivity=False):
