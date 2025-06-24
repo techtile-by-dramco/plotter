@@ -215,7 +215,7 @@ class TechtilePlotter:
         # Run the Dash app in a separate thread
         kwargs = {"debug": False, "port": 8080, "host": "0.0.0.0"}
         self.thr = threading.Thread(
-            target=self.app.run_server, daemon=True, kwargs=kwargs
+            target=self.app.run, daemon=True, kwargs=kwargs
         )
         self.thr.start()
 
